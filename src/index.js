@@ -36,7 +36,9 @@ new Promise(resolve => ymaps.ready(resolve))
         controller.myMap.events.add('click', function (e) {
             //console.log(e.get('target'));
             let coords = e.get('coords');
-            controller.openBalloon(coords, tmpBalloon);           
+            
+            controller.openBalloon(coords, tmpBalloon);
+            controller.thisId = 0;
         });
         
         document.addEventListener('click', function (e){
@@ -56,7 +58,7 @@ new Promise(resolve => ymaps.ready(resolve))
                 if (!checkEmpty) {
                     alert('заполнены не все поля');
                 } else {
-                    controller.drawBalloon(coords, tmpBalloon, objFields); 
+                    controller.addMarker(coords, tmpBalloon, objFields); 
                 }
                    
             } else if (e.target.getAttribute('data-action') === 'close') {

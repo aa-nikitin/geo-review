@@ -39,28 +39,36 @@
   <body>
   <div id="map"></div>
 
-  <script id="form-review" type="text/x-handlebars-template">
-    <div class="map-popup top">
-        <div class="map-popup__head">$[contentLayout] <a data-action="close" class="close map-popup__close"></a> </div>
-        <div class="map-popup__content">
-            <div class="map-popup__reviews"></div>
-            <div class="map-popup__feedback map-feedback">
-                <div class="map-feedback__head">ВАШ ОТЗЫВ</div>
-                <div class="map-feedback__form">
-                <div class="form-field map-feedback__form-field">
-                    <input class="form-field__edit map-feedback-name" name="map-feedback-name" type="text" placeholder="Ваше имя:"/>
+    <script id="form-review" type="text/x-handlebars-template">
+        <div class="map-popup top">
+            <div class="map-popup__head">$[contentLayout] <a data-action="close" class="close map-popup__close"></a> </div>
+            <div class="map-popup__content">
+                <div class="map-popup__reviews"></div>
+                <div class="map-popup__feedback map-feedback">
+                    <div class="map-feedback__head">ВАШ ОТЗЫВ</div>
+                    <div class="map-feedback__form">
+                    <div class="form-field map-feedback__form-field">
+                        <input class="form-field__edit map-feedback-name" name="map-feedback-name" type="text" placeholder="Ваше имя:"/>
+                    </div>
+                    <div class="form-field map-feedback__form-field">
+                        <input class="form-field__edit map-feedback-place" name="map-feedback-place" type="text" placeholder="Укажите место:"/>
+                    </div>
+                    <div class="form-field map-feedback__form-field">
+                        <textarea class="form-field__edit map-feedback-message" name="map-feedback-message" type="text" placeholder="Поделитесь впечатлениями:"></textarea>
+                    </div>
+                    </div>
                 </div>
-                <div class="form-field map-feedback__form-field">
-                    <input class="form-field__edit map-feedback-place" name="map-feedback-place" type="text" placeholder="Укажите место:"/>
-                </div>
-                <div class="form-field map-feedback__form-field">
-                    <textarea class="form-field__edit map-feedback-message" name="map-feedback-message" type="text" placeholder="Поделитесь впечатлениями:"></textarea>
-                </div>
-                </div>
-            </div>
-            <div class="map-popup__buttons"><a class="button map-popup__add" data-action="add">Добавить</a></div>
-        </div> 
-    </div>
+                <div class="map-popup__buttons"><a class="button map-popup__add" data-action="add">Добавить</a></div>
+            </div> 
+        </div>
+    </script>
+
+    <script id="reviews" type="text/x-handlebars-template">
+        <div>
+            {{#each items}}
+            {{foo}}
+            {{/each}}
+        </div>
     </script>
   
   </body>
