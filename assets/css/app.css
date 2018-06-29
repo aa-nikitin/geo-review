@@ -80,7 +80,9 @@ ul {
   list-style: none; }
 
 a {
-  color: #57e6e6; }
+  color: #1D67A4;
+  cursor: pointer;
+}
   a:hover {
     text-decoration: none; }
 
@@ -995,6 +997,32 @@ h1, h2, h3, h4, h5, h6 {
 
 .icon {
   display: block; }
+
+
+.claster-balloon {
+
+}
+
+.claster-balloon__header {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 5px; 
+}
+
+.claster-balloon__link {
+  
+}
+
+.claster-balloon__body {
+  margin-top: 10px; 
+}
+
+.claster-balloon__footer {
+  position: absolute;
+  bottom: 10px; 
+  color: #ccc;
+  right: 0px; 
+}
 
 /*
  * jQuery FlexSlider v2.3.0

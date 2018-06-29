@@ -15,18 +15,40 @@ let myMap,
     clusterer,
     addressMap;
 
-let lastId = 0;
-let thisId = 0;
 let objGlobRev = {};
+
+class makingID {
+    constructor(thisId, lastId) {
+      this.thisId = thisId;
+      this.lastId = lastId;
+    }  
+    updateId(id) {
+        if (id) {
+            this.thisId = id;
+        } else {
+            this.lastId++;
+            this.thisId = this.lastId;
+        }
+    }  
+}
+
+let idMarker = new makingID(0, 0);
 
 
 
 export default {
-    openBalloon(coords, tmp) { // открытие балуна
-        if (!this.myMap.balloon.isOpen()) {   
+    openBalloon(coords, tmp, idReviews) { // открытие балуна
+        if (!this.myMap.balloon.isOpen()) { 
+            let reviews; 
+            if (idReviews) {
+                reviews = this.refreshReviews(objGlobRev[idReviews]);
+            } else {
+                reviews = 'Отзывов пока нет...';
+            }
             this.geocodeAddress(coords).then(address => {
                 this.myMap.balloon.open(coords, {
-                    contentLayout: address
+                    contentLayout: address,
+                    contentReviews: reviews
                 }, {
                     balloonShadow: false,
                     layout: tmp,
@@ -34,49 +56,36 @@ export default {
                 });
                 this.addressMap = address;
             });
+            idMarker.updateId(idReviews);
+            //console.log(idMarker.thisId);
         } else {
-            this.myMap.balloon.close();
-            thisId = 0;
+            this.closeForm();
         }
     },
     addMarker(coords, tmp, review) { // создание метки  
         let that = this;  
-        let idMark;
-        
-        if (objGlobRev[thisId]) {
-            idMark = thisId;     
-        } else {
-            lastId++;
-            idMark = lastId;
-            thisId = lastId;
-        }        
-        
+        let idMark = idMarker.thisId;       
         let coordsPoint = this.coordFormat(coords[0], coords[1]);    
         let myPlacemark = new ymaps.Placemark(coordsPoint, {
             id: idMark,
-            balloonContentHeader: `${review.feedbackName.value}`,
-            balloonContentBody: `
-                ${this.addressMap}(${review.feedbackPlace.value}) 
-                <div>${review.feedbackMessage.value}</div>
-            `,
-            balloonContentFooter: `${review.date.toLocaleString("ru", formatDate)}`
+            balloonContentHeader: `${review.feedbackPlace.value}`,
+            balloonContentLink: `${this.addressMap}`,
+            balloonContentBody: `${review.feedbackMessage.value}`,
+            balloonContentFooter: `${review.date}`
         },{
             openBalloonOnClick: false
         });
         
-        myPlacemark.events.add('click', function (e) {
-            //console.log(e.get('target').properties.get('id'));
-            
-            //document.querySelector('.map-popup__add').setAttribute('data-id', 'sdf') ;
-            //console.log(e.get('target'));
-            
-            thisId = e.get('target').properties.get('id');
-            that.readLocalStorage(thisId)
-            that.openBalloon(e.get('target').geometry.getCoordinates(), tmp);
+        myPlacemark.events.add('click', function (e) { //событие при нажатии на метку
+            let idPoint = e.get('target').properties.get('id');
+
+            idMarker.updateId(idPoint);
+            that.refreshReviews(objGlobRev[idPoint]);
+            that.openBalloon(e.get('target').geometry.getCoordinates(), tmp, idPoint);
         });
         this.myMap.geoObjects.add(myPlacemark);
         this.clusterer.add(myPlacemark);
-        this.writeLocalStorage(idMark, review);
+        this.writeLocalStorage(idMark, review, coords);
         view.clearFields(review);
     },
     coordFormat(pointX, pointY) { //преобразование координат
@@ -96,26 +105,33 @@ export default {
 
         return true;
     },
-    writeLocalStorage(id, review) { 
+    writeLocalStorage(id, review, coords) { // пишем в объект и localStorage
         let markerData = [];
+
         if (objGlobRev[id]) {
             markerData = objGlobRev[id].reviews;   
         }
-
         markerData.push({
             name : review.feedbackName.value,
             place : review.feedbackPlace.value,
             message : review.feedbackMessage.value,
             date : review.date
         });
-        objGlobRev[id] = {reviews : markerData};
-        console.log(objGlobRev);
-        /*let asd = JSON.stringify(objGlobRev)
-        console.log(JSON.parse(asd)); */
+        objGlobRev[id] = {
+            reviews : markerData,
+            coords : coords
+        };
+        //console.log(objGlobRev);
     },
-    readLocalStorage(id) { 
-        let sss = view.renderReviews(objGlobRev[id].reviews,'reviews');
-        console.log(sss);  
-        console.log(objGlobRev[id].reviews[0]);  
+    readLocalStorage(id, tmpBalloon) { // 
+        this.myMap.balloon.close();
+        this.openBalloon(objGlobRev[id].coords, tmpBalloon, id);
+        //console.log(objGlobRev[id].coords);  
+    },
+    refreshReviews(data = objGlobRev[idMarker.thisId]) { // обновить отзывы
+        return view.render('reviews', data); 
+    },
+    closeForm() { 
+        this.myMap.balloon.close();
     }
 };

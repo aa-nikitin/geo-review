@@ -43,7 +43,7 @@
         <div class="map-popup top">
             <div class="map-popup__head">$[contentLayout] <a data-action="close" class="close map-popup__close"></a> </div>
             <div class="map-popup__content">
-                <div class="map-popup__reviews"></div>
+                <div class="map-popup__reviews">$[contentReviews]</div>
                 <div class="map-popup__feedback map-feedback">
                     <div class="map-feedback__head">ВАШ ОТЗЫВ</div>
                     <div class="map-feedback__form">
@@ -63,12 +63,26 @@
         </div>
     </script>
 
-    <script id="reviews" type="text/x-handlebars-template">
-        <div>
-            {{#each items}}
-            {{foo}}
-            {{/each}}
+    <script id="balloon-review" type="text/x-handlebars-template">
+        <div class="claster-balloon">
+            <h2 class=claster-balloon__header>$[properties.balloonContentHeader|raw]</h2>
+            <a class=claster-balloon__link data-action="open-link" data-id-mark="$[properties.id|raw]">$[properties.balloonContentLink|raw]</a>
+            <div class=claster-balloon__body>$[properties.balloonContentBody|raw]</div>
+            <div class=claster-balloon__footer>$[properties.balloonContentFooter|raw]</div>
         </div>
+    </script>
+
+    <script id="reviews" type="text/x-handlebars-template">
+        {{#each reviews}}
+        <div class="map-popup__review-item map-review">
+            <div class="map-review__top">
+                <div class="map-review__name">{{name}}</div>
+                <div class="map-review__place">{{place}}</div>
+                <div class="map-review__date">{{date}}</div>
+            </div>
+            <div class="map-review__text">{{message}}</div>
+        </div>
+        {{/each}}
     </script>
   
   </body>

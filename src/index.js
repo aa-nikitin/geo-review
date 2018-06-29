@@ -9,11 +9,14 @@ new Promise(resolve => ymaps.ready(resolve))
             zoom: 7
         });
 
+        controller.myMap.cursors.push('pointer');
+
         const customItemContentLayout = ymaps.templateLayoutFactory.createClass(
-            // Флаг "raw" означает, что данные вставляют "как есть" без экранирования html.
-            '<h2 class=ballon_header>{{ properties.balloonContentHeader|raw }}</h2>' +
-                '<a data-id-mark="{{ properties.id|raw }}" class=ballon_body>{{ properties.balloonContentBody|raw }}</a>' +
-                '<div class=ballon_footer>{{ properties.balloonContentFooter|raw }}</div>'
+            view.render('balloon-review')
+        );
+
+        const tmpBalloon = ymaps.templateLayoutFactory.createClass(
+            view.render('form-review')
         );
 
         controller.clusterer = new ymaps.Clusterer({
@@ -22,23 +25,14 @@ new Promise(resolve => ymaps.ready(resolve))
             clusterBalloonItemContentLayout: customItemContentLayout,
             clusterBalloonPagerSize: 5,
             clusterDisableClickZoom: true
-            //openBalloonOnClick: false
         });
 
         controller.myMap.geoObjects.add(controller.clusterer);
-     
-        //$[properties.balloonContent]
-
-        let tmpBalloon = ymaps.templateLayoutFactory.createClass(
-            view.renderForm('form-review')
-        );
 
         controller.myMap.events.add('click', function (e) {
-            //console.log(e.get('target'));
             let coords = e.get('coords');
             
             controller.openBalloon(coords, tmpBalloon);
-            controller.thisId = 0;
         });
         
         document.addEventListener('click', function (e){
@@ -47,25 +41,29 @@ new Promise(resolve => ymaps.ready(resolve))
                     feedbackName : document.querySelector('.map-feedback-name'),
                     feedbackPlace : document.querySelector('.map-feedback-place'),
                     feedbackMessage : document.querySelector('.map-feedback-message'),
-                    date : new Date()
+                    date : new Date().toLocaleString("ru", controller.formatDate)
                 };
+                const tmpReviews = document.querySelector('.map-popup__reviews');
                 let coords = controller.myMap.balloon.getPosition();
                 let checkEmpty = controller.checkFullness(
                     objFields.feedbackName.value, 
-                    objFields.feedbackPlace.value
+                    objFields.feedbackPlace.value,
+                    objFields.feedbackMessage.value
                 );
   
                 if (!checkEmpty) {
                     alert('заполнены не все поля');
                 } else {
-                    controller.addMarker(coords, tmpBalloon, objFields); 
-                }
-                   
+                    controller.addMarker(coords, tmpBalloon, objFields);
+                    tmpReviews.innerHTML = controller.refreshReviews();  
+                }      
             } else if (e.target.getAttribute('data-action') === 'close') {
-                controller.myMap.balloon.close();
+                controller.closeForm();
+            } else if (e.target.getAttribute('data-action') === 'open-link') {
+                let idMarker = e.target.getAttribute('data-id-mark');
+
+                controller.readLocalStorage(idMarker, tmpBalloon);
             }
         });
-
-        //return friends.items;
     })
 
