@@ -1,4 +1,3 @@
-import model from './modules/model.js';
 import view from './modules/view.js';
 import controller from './modules/controller.js';
 
@@ -9,8 +8,6 @@ new Promise(resolve => ymaps.ready(resolve))
             zoom: 7
         });
 
-        controller.myMap.cursors.push('pointer');
-
         const customItemContentLayout = ymaps.templateLayoutFactory.createClass(
             view.render('balloon-review')
         );
@@ -18,6 +15,8 @@ new Promise(resolve => ymaps.ready(resolve))
         const tmpBalloon = ymaps.templateLayoutFactory.createClass(
             view.render('form-review')
         );
+
+        controller.myMap.cursors.push('pointer');
 
         controller.clusterer = new ymaps.Clusterer({
             preset: 'islands#invertedVioletClusterIcons',
@@ -28,6 +27,8 @@ new Promise(resolve => ymaps.ready(resolve))
         });
 
         controller.myMap.geoObjects.add(controller.clusterer);
+
+        controller.readLocalStorage(tmpBalloon);
 
         controller.myMap.events.add('click', function (e) {
             let coords = e.get('coords');
@@ -54,7 +55,7 @@ new Promise(resolve => ymaps.ready(resolve))
                 if (!checkEmpty) {
                     alert('заполнены не все поля');
                 } else {
-                    controller.addMarker(coords, tmpBalloon, objFields);
+                    controller.createMarker(coords, tmpBalloon, objFields);
                     tmpReviews.innerHTML = controller.refreshReviews();  
                 }      
             } else if (e.target.getAttribute('data-action') === 'close') {
@@ -62,8 +63,7 @@ new Promise(resolve => ymaps.ready(resolve))
             } else if (e.target.getAttribute('data-action') === 'open-link') {
                 let idMarker = e.target.getAttribute('data-id-mark');
 
-                controller.readLocalStorage(idMarker, tmpBalloon);
+                controller.loadMarkers(idMarker, tmpBalloon);
             }
         });
-    })
-
+    });

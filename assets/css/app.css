@@ -55,7 +55,9 @@ To change `display` (e.g. `display: inline-block;`), we suggest using a common C
   font-style: normal; }
 
 body, html {
+  padding: 0;
   margin: 0;
+  width: 100%;
   height: 100%; }
   @media screen and (max-width: 71.25rem) {
     body, html {
@@ -68,6 +70,11 @@ body {
   font-family: 'Fira Sans', sans-serif;
   font-weight: "400";
   font-size: 0.75rem; }
+
+#map {
+    width: 100%;
+    height: 100%;
+  }
 
 .wrapper {
   min-height: 100%;
