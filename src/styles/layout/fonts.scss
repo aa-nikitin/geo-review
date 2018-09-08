@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,600,700');
+
+@font-face {
+  font-family: 'FontAwesome';
+  src : url('/fonts/fontawesome-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@mixin mainfont ($f-weight: '400') {
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: $f-weight;
+}
+
+@mixin awesome ($f-weight: '400') {
+  font-family: 'FontAwesome';
+}

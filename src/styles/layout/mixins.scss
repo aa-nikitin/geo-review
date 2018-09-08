@@ -1,0 +1,99 @@
+%clearfix {
+    &:after {
+        content: "";
+        display: block;
+        clear: both;
+    }
+}
+  
+  
+@mixin centered($axis: 'both') {
+    position: absolute;
+    @if $axis=='x' {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    @if $axis=='y' {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    @if $axis=='both' {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+  
+    @if $axis=='mirror' {
+        bottom:50%;
+        transform: rotate(180deg) translateY(-50%);
+    }
+}
+  
+//media
+  
+@mixin display() {
+    @media screen and (max-width: 1140px) {
+      @content;
+    }
+  }
+  
+  @mixin laptop() {
+    @media screen and (max-width: 960px) {
+      @content;
+    }
+  }
+  
+  @mixin tablets() {
+    @media screen and (max-width: 720px) {
+      @content;
+    }
+  }
+  
+  @mixin phones() {
+    @media screen and (max-width: 540px) {
+      @content;
+    }
+  }
+  
+//icons
+
+// иконка с права от текста [наименование иконки]
+//--наименование иконки это имя стиля подключаемого через extend
+@mixin png-ico($nameIcon:"",$left:0px,$top:0px){  
+    display: block;
+    content:"";
+    @extend .icon-#{$nameIcon};
+    position: absolute;
+    left:$left;
+    top:$top;
+}
+
+// иконка с права от текста [наименование иконки]
+//--наименование иконки это код шрифта awesome например \f19d
+@mixin awesome-ico($nameIcon:"",$left:'',$top:''){  
+    display: inline-block;
+    font-family: 'FontAwesome';
+    content:'#{$nameIcon}';
+    @if ($left != '') {
+        @if ($top != '') {
+            position: absolute;
+            left:$left;
+            top:$top;
+        }
+    }
+    
+}
+
+// цвет для плейсхолдера инпута [наименование класса, цвет]
+@mixin placeholder($className:'',$color:#ccc){  
+    .#{$className}::-webkit-input-placeholder {color:$color;}
+    .#{$className}:-moz-placeholder {color:$color;}
+    .#{$className}::-moz-placeholder {color:$color;}
+    .#{$className}:-ms-input-placeholder {color:$color;}   
+}
+
+// transition [свойство, время анимации]
+@mixin animation($prop:background-color,$time:1s){  
+    transition-property: $prop;
+    transition-duration: $time;  
+}

@@ -6,10 +6,13 @@ let rules = require('./webpack.config.rules')();
 let path = require('path');
 
 rules.push({
-    test: /\.css$/,
+    test: /\.(css|scss)$/,
     use: ExtractTextPlugin.extract({
         fallback: 'style-loader',
-        use: 'css-loader'
+        use: [
+            'css-loader',
+            "sass-loader"
+        ]
     })
 });
 

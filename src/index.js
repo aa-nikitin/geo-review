@@ -1,5 +1,7 @@
 import view from './modules/view.js';
 import controller from './modules/controller.js';
+import './styles/app.scss';
+import font from './fontawesome-webfont.woff'
 
 new Promise(resolve => ymaps.ready(resolve))
     .then(() => {

@@ -1,0 +1,68 @@
+.map-popup {
+    position: absolute;
+    /*top: 100px;
+    left: 200px;*/
+    width: 380px;
+    
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.map-popup__head {
+    padding:15px 40px 15px 15px;
+    background: $orange;
+    color: $white;
+    position: relative;
+    font-size: 12px;
+    &:before {
+        @include awesome-ico('\f041');
+        font-size:14px;
+        margin-right: 7px;
+    }
+}
+
+.map-popup__close {
+    @include centered(y);
+    right:15px;
+    cursor:pointer;
+    opacity: 0.8;
+    &:hover {
+        opacity: 1;
+    }
+    &:after {
+        @include awesome-ico('\f00d');
+        font-size:18px;
+        display: block;
+    }
+}
+
+.map-popup__content {
+    padding: 15px;
+}
+
+.map-popup__reviews {
+    height: 135px;
+    overflow-y: auto;  
+}
+
+.map-popup__review-item {
+    margin-bottom: 15px;
+    line-height: 1.7;
+}
+
+.map-popup__feedback {
+    border-top: solid 1px #f0f0f0; 
+    margin-top: 10px;
+    padding-top: 15px;    
+}
+
+.map-popup__buttons {
+    text-align: right;  
+    margin-top: 10px; 
+}
+
+.map-popup__add {
+    padding-left: 20px;
+    padding-right: 20px; 
+}

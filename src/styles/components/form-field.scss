@@ -1,0 +1,32 @@
+.form-field {
+    &:last-child {
+        margin-bottom: 0px;
+    }    
+}
+
+.form-field__edit {
+    border:1px solid transparent;
+    outline: none;
+    border: solid 1px #c4c4c4;
+    width:100%;
+    padding:10px 15px;
+    font-size:16px;
+    border-radius: 20px;
+    @include animation(border-color);
+    font-size:15px;
+    color: #9f9f9f;
+    font-weight: 300;
+}
+
+.form-field__name {
+    
+    margin-bottom:7px;
+}
+
+@include placeholder('form-field__edit', #9f9f9f);
+
+.error {
+	border-color: $error-color;
+}
+
+@include placeholder('form-field__edit.error', $error-color);

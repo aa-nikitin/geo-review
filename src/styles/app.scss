@@ -1,0 +1,24 @@
+$white: #fff;
+$orange: #ff8663;
+
+$blue-light: #fff;
+$blue: #2196f3;
+$navy: #226088;
+$yellow: #ffeb3b;
+$green: #5da130;
+$error-color: #ff0505;
+$font-color: #333333;
+$titles-color: $font-color;
+
+@import "layout/mixins.scss";
+@import "layout/fonts.scss";
+@import "layout/flexgrid.scss";
+@import "layout/base.scss";
+@import "layout/typography.scss";
+
+
+@import "components/map-feedback.scss";
+@import "components/map-popup.scss";
+@import "components/map-review.scss";
+@import "components/map.scss";
+@import "components/form-field.scss";
